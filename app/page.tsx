@@ -14,15 +14,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ResponsiveLine } from "@nivo/line";
 import { SVGProps } from "react";
-import Image from "next/image";
 import Avatar from "boring-avatars";
 
 import { JSX, ClassAttributes, HTMLAttributes } from "react";
 
 export default function Home() {
-
-  React.useEffect(() => {}, []);
-
+  React.useEffect(() => {
+    window.zyg = {
+      authToken:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3b3Jrc3BhY2VJZCI6Indya2Nwdjd0czR0aWR1YXU5bjQ4dWYwIiwiZXh0ZXJuYWxJZCI6ImY4MzNmMWVmLWFmZTItNDFhMC04ZDI2LWY1NzM3NjU1ZDgxMSIsImVtYWlsIjoic2FuY2hpdEB6eWcuYWkiLCJwaG9uZSI6Iis5MTc3NjA2ODYwNjgiLCJpc3MiOiJhdXRoLnp5Zy5haSIsInN1YiI6ImNfY3B2OWNuNHRpZHU5Z2F2Z2ZrNWciLCJhdWQiOlsiY3VzdG9tZXIiXSwiZXhwIjoxNzUxMjUzNzYyLCJuYmYiOjE3MTk3MTc3NjIsImlhdCI6MTcxOTcxNzc2MiwianRpIjoid3JrY3B2N3RzNHRpZHVhdTluNDh1ZjA6Y19jcHY5Y240dGlkdTlnYXZnZms1ZyJ9.GclACnfXPHpM5x1kHmYS4YAP3T1u3-4kIy--hS6UljM",
+      widgetId: "ab233e74-d926-49e2-bfc7-ac3d2cf5efdf",
+    };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
