@@ -1,5 +1,5 @@
 (function () {
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://zygwidget.vercel.app";
   var config,
     isHidden = !0,
     pageWidth = window.innerWidth;
