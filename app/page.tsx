@@ -15,17 +15,72 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ResponsiveLine } from "@nivo/line";
 import { SVGProps } from "react";
 import Avatar from "boring-avatars";
+import { useMutation } from "@tanstack/react-query";
 
 import { JSX, ClassAttributes, HTMLAttributes } from "react";
 
-export default function Home() {
+export default function Home({ searchParams }: { searchParams: any }) {
+  const { key = null } = searchParams;
+  const mutation = useMutation({
+    mutationFn: async ({ memberId }: { memberId: string }) => {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ memberId }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      return data;
+    },
+    onSuccess: (data: any) => {
+      console.log(data);
+      const { jwt: authToken } = data;
+      window.zyg = {
+        authToken,
+        widgetId: "ab233e74-d926-49e2-bfc7-ac3d2cf5efdf",
+      };
+    },
+  });
+
+  const { mutate, isIdle, isPending, isSuccess, isError } = mutation;
+
   React.useEffect(() => {
-    window.zyg = {
-      authToken:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3b3Jrc3BhY2VJZCI6Indya2Nwdjd0czR0aWR1YXU5bjQ4dWYwIiwiZXh0ZXJuYWxJZCI6ImY4MzNmMWVmLWFmZTItNDFhMC04ZDI2LWY1NzM3NjU1ZDgxMSIsImVtYWlsIjoic2FuY2hpdEB6eWcuYWkiLCJwaG9uZSI6Iis5MTc3NjA2ODYwNjgiLCJpc3MiOiJhdXRoLnp5Zy5haSIsInN1YiI6ImNfY3B2OWNuNHRpZHU5Z2F2Z2ZrNWciLCJhdWQiOlsiY3VzdG9tZXIiXSwiZXhwIjoxNzUxMjUzNzYyLCJuYmYiOjE3MTk3MTc3NjIsImlhdCI6MTcxOTcxNzc2MiwianRpIjoid3JrY3B2N3RzNHRpZHVhdTluNDh1ZjA6Y19jcHY5Y240dGlkdTlnYXZnZms1ZyJ9.GclACnfXPHpM5x1kHmYS4YAP3T1u3-4kIy--hS6UljM",
-      widgetId: "ab233e74-d926-49e2-bfc7-ac3d2cf5efdf",
-    };
-  }, []);
+    if (!key) return;
+    mutate({ memberId: key });
+  }, [key, mutate]);
+
+  if (isError) {
+    return (
+      <div className="min-h-screen flex">
+        <div className="my-auto mx-auto">
+          Something went wrong. React out to me at
+          <span className="ml-1">
+            <a
+              target="_blank"
+              href="https://x.com/_sanchitrk"
+              className="text-blue-500"
+            >
+              @_sanchitrk
+            </a>
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (isIdle || isPending || !isSuccess) {
+    return (
+      <div className="min-h-screen flex">
+        <div className="my-auto mx-auto">...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -65,14 +120,6 @@ export default function Home() {
                   variant="marble"
                   colors={["#d9822b", "#8b5cf6", "#e74c3c", "#283593"]}
                 />
-                {/* <Image
-                  src="/placeholder.svg"
-                  width="32"
-                  height="32"
-                  className="rounded-full"
-                  alt="Avatar"
-                />
-                <span className="sr-only">Toggle user menu</span> */}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
